@@ -24,7 +24,7 @@ allows the user to start at the first character of the myStringSpan series, with
 course of 500 ms
 
 function FancyFade(id, dur, num, stringcount) {
-    if (num < stringcount) {
+    if (num < stringcount + 1) { //You need the + 1 here because the span id's begin with #1, not 0, by my method
         $(id + num).fadeIn(dur);
         num++;
         setTimeout(function () {FancyFade(id, dur, num, stringcount);}, 300);
