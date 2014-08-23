@@ -31,7 +31,3 @@ function FancyFade(id, dur, num, stringcount) {
     }
 }
     
-    
-    
-    
-}
