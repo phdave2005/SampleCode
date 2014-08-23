@@ -6,11 +6,9 @@ ImageLoad is bound to a body onload event, as follows -->
 <body onload="ImageLoad('1')">
 
 function ImageLoad(num) {
-    var newnum = Number(num), delaytime = 800, fadetime = 1200;
-    (num === '44') ? $("#Piece" + num).fadeIn(2500) : $("#Piece" + num).fadeIn(fadetime);
-    if (NewNum === '44') {
-        delaytime = 1600;
-    }
+    var newnum = Number(num), delaytime;
+    (num === '44') ? $("#Piece" + num).fadeIn(2500) : $("#Piece" + num).fadeIn(1200);
+    (num === '44') ? delaytime = 1600 : delaytime = 800;
     if (newnum < 45) {
         newnum++;
         var NewNum = newnum.toString();
