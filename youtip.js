@@ -403,7 +403,7 @@
                     }
                 }
 
-                if (settings.destroyOnMouseleave) {
+                if (typeof(settings.destroyOnMouseleave) === 'boolean' && settings.destroyOnMouseleave) {
                     $("#yt_container").mouseleave(function() {
                         removeYoutip(1);
                     });
