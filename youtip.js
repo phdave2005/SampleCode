@@ -10,7 +10,7 @@
                 destroyOnMouseleave: true,
                 hiddenSections: ['status'],
                 maxWidth: .25,
-                showEmbed: false
+                showEmbed: true
             },
             settings = arg.user_defined_settings ? $.extend(default_settings, arg.user_defined_settings) : default_settings,
             videoId = $(arg.t).attr("data-video_id"),
