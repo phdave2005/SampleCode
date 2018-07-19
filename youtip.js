@@ -1,3 +1,15 @@
+/*
+ * youTip - A tooltip populated by data pulled from the YouTube API
+ * Copyright 2018 David Partyka
+ * www.cssburner.com
+ *
+ * Version 1.0
+ *
+ * The youTip jQuery plug-in is dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ */
+
 (function($) {
     $.fn.youTip = function(arg) {
         var default_settings = {
@@ -123,7 +135,7 @@
         function populateContainer(ARG) {
             var i, j,
                 inner = '',
-                iframe = settings.showEmbed ? '<iframe style="width:' + vidWidth + 'px;height:' + vidHeight + 'px" src="https://www.youtube.com/embed/' + videoId + '"></iframe>' : '',
+                iframe = (typeof(settings.showEmbed) === 'boolean' && settings.showEmbed) ? '<iframe style="width:' + vidWidth + 'px;height:' + vidHeight + 'px" src="https://www.youtube.com/embed/' + videoId + '"></iframe>' : '',
                 stats_symbol_builder = function(key) {
                     var str;
                     if (font_awesome_version) {
@@ -419,7 +431,7 @@
                     "top": (arg.event.pageY + offset_coordinates.y) + "px",
                     "visibility": "visible"
                 });
-                if (settings.createCallback) {
+                if(typeof(settings.destroyCallback) === 'function' && settings.createCallback) {
                     settings.createCallback();
                 }
             }, settings.delay);
@@ -431,7 +443,7 @@
             var handleDestroyCallback = function() {
                 $("#arrow,#yt_container").remove();
                 animation_in_progress = false;
-                if (settings.destroyCallback) {
+                if (typeof(settings.destroyCallback) === 'function' && settings.destroyCallback) {
                     settings.destroyCallback();
                 }
             };
