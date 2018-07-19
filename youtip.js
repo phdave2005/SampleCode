@@ -12,7 +12,7 @@
                 maxWidth: .25,
                 showEmbed: false
             },
-            settings = $.extend(default_settings, arg.user_defined_settings),
+            settings = arg.user_defined_settings ? $.extend(default_settings, arg.user_defined_settings) : default_settings,
             videoId = $(arg.t).attr("data-video_id"),
             yt_key = /* YOUR YOUTUBE KEY GOES HERE */,
             w = $(window),
