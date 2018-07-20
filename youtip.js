@@ -96,7 +96,7 @@
                                     Title: sn.title,
                                     Description: sn.description,
                                     Published_At: formatDate(sn.publishedAt)
-                                }
+                                };
                             }
                             if (settings.hiddenSections.indexOf("statistics") === -1) {
                                 ARG.statistics = {
@@ -105,13 +105,13 @@
                                     Dislikes: st.dislikeCount,
                                     Favorites: st.favoriteCount,
                                     Comments: st.commentCount
-                                }
+                                };
                             }
                             if (settings.hiddenSections.indexOf("status") === -1) {
                                 ARG.status = {
                                     License: sts.license,
                                     Privacy_Status: sts.privacyStatus
-                                }
+                                };
                             }
                             break;
                         }
@@ -156,7 +156,7 @@
                             }
                         };
 
-                        str = '<i class="' + map["v" + font_awesome_version][key] + '"></i>'
+                        str = '<i class="' + map["v" + font_awesome_version][key] + '"></i>';
                     }
 
                     return str;
@@ -233,49 +233,37 @@
                     arrow_base_border = arrow_width + "px solid " + settings.background,
                     tip_translate = 3 * arrow_width,
                     applyArrowCSS = function(orientation) {
-                        var offset_coordinates;
                         switch (orientation) {
                             case 1:
                                 arrow.css({
                                     "border-left": "none",
                                     "border-right": arrow_base_border
                                 });
-                                offset_coordinates = {
-                                    x: settings.arrowOffset,
-                                    y: 0
-                                };
                                 break;
                             case 2:
                                 arrow.css({
                                     "border-right": "none",
                                     "border-left": arrow_base_border
                                 });
-                                offset_coordinates = {
-                                    x: -1 * settings.arrowOffset,
-                                    y: 0
-                                };
                                 break;
                             case 3:
                                 arrow.css({
                                     "border-top": "none",
                                     "border-bottom": arrow_base_border
                                 });
-                                offset_coordinates = {
-                                    x: 0,
-                                    y: settings.arrowOffset
-                                };
                                 break;
                             case 4:
                                 arrow.css({
                                     "border-bottom": "none",
                                     "border-top": arrow_base_border
                                 });
-                                offset_coordinates = {
-                                    x: 0,
-                                    y: -1 * settings.arrowOffset
-                                };
                                 break;
                         }
+                        
+                        var offset_coordinates = {
+                            x: Math.cos(orientation * Math.PI) * settings.arrowOffset,
+                            y: Math.sin(orientation * Math.PI) * settings.arrowOffset
+                        };
 
                         return offset_coordinates;
                     },
@@ -431,14 +419,13 @@
                     "top": (arg.event.pageY + offset_coordinates.y) + "px",
                     "visibility": "visible"
                 });
-                if(typeof(settings.destroyCallback) === 'function' && settings.createCallback) {
+                if(typeof(settings.createCallback) === 'function' && settings.createCallback) {
                     settings.createCallback();
                 }
             }, settings.delay);
         }
 
         var animation_in_progress;
-
         function removeYoutip(user_destroy) {
             var handleDestroyCallback = function() {
                 $("#arrow,#yt_container").remove();
@@ -467,5 +454,5 @@
                 handleDestroyCallback();
             }
         }
-    }
+    };
 })(jQuery);
