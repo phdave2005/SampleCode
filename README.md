@@ -86,5 +86,4 @@ showEmbed:
     <boolean>: If set to true, the embedded video will be included in the tooltip, otherwise excluded
   
   
-In addition, the youTip function will scan the DOM and look for inclusion of font awesome 4 or 5 (free version). If found, the statistics icons will be FA, otherwise, plain HTML entities.  
-
+In addition, the youTip function will scan the DOM and look for inclusion of font awesome 4 or 5 (free version). If found, the statistics icons will be FA, otherwise, plain HTML entities.
