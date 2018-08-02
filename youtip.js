@@ -24,6 +24,9 @@
                 maxWidth: .25,
                 showEmbed: true
             },
+            $t = $(arg.t),
+            obj_offset = $t.offset(),
+            obj_width = $t.outerWidth(),
             settings = arg.user_defined_settings ? $.extend(default_settings, arg.user_defined_settings) : default_settings,
             videoId = $(arg.t).attr("data-video_id"),
             yt_key = /* YOUR YOUTUBE KEY GOES HERE */,
@@ -85,7 +88,7 @@
                     };
 
                 if (items.length) {
-                    outer: for (i in items) {
+                    for (i in items) {
                         if (items[i]['id'] && (items[i]['id'] === videoId)) {
                             var sn = items[i]['snippet'],
                                 st = items[i]['statistics'],
@@ -214,7 +217,7 @@
             }
 
             var append = '<div id="yt_container" style="width:' + maxWidth + 'px;background:' + settings.background + '">' + iframe + inner + '</div>';
-            append += '<div id="arrow"></div>';
+            append += '<div id="yt_arrow"></div>';
 
             $("body").click(function(e) {
                 if (e.target.id !== 'yt_container') {
@@ -224,201 +227,92 @@
 
             setTimeout(function() {
                 var container = $("#yt_container"),
-                    arrow = $("#arrow"),
+                    arrow = $("#yt_arrow"),
                     ow = container.outerWidth(),
                     oh = container.outerHeight(),
-                    half_ow = .5 * ow,
                     half_oh = .5 * oh,
                     arrow_width = .02 * ow,
                     arrow_base_border = arrow_width + "px solid " + settings.background,
-                    tip_translate = 3 * arrow_width,
-                    applyArrowCSS = function(orientation) {
-                        switch (orientation) {
+                    applyArrowCSS = function(quadrant) {
+                        switch (quadrant) {
                             case 1:
-                                arrow.css({
-                                    "border-left": "none",
-                                    "border-right": arrow_base_border
-                                });
-                                break;
-                            case 2:
+                            case 4:
                                 arrow.css({
                                     "border-right": "none",
                                     "border-left": arrow_base_border
                                 });
-                                break;
+                            break;
+                            case 2:
                             case 3:
                                 arrow.css({
-                                    "border-top": "none",
-                                    "border-bottom": arrow_base_border
+                                    "border-right": arrow_base_border,
+                                    "border-left": "none"
                                 });
-                                break;
-                            case 4:
-                                arrow.css({
-                                    "border-bottom": "none",
-                                    "border-top": arrow_base_border
-                                });
-                                break;
+                            break;
                         }
-                        
-                        var offset_coordinates = {
-                            x: Math.cos(orientation * Math.PI) * settings.arrowOffset,
-                            y: Math.sin(orientation * Math.PI) * settings.arrowOffset
-                        };
-
-                        return offset_coordinates;
                     },
-                    offset_coordinates = {
-                        x: 0,
-                        y: 0
+                    tip_coordinates = {
+                        x: obj_offset.left,
+                        y: obj_offset.top
                     },
-                    container_coordinates = {};
+                    container_coordinates = {},
+                    quadrant, xMult, xAdjustment,
+                    containerXAdjustment = 0,
+                    containerYAdjustment = 0,
+                    tipXAdjustment = 0;
 
                 arrow.css({
                     "border": arrow_width + "px solid transparent"
                 });
 
                 if (arg.event.pageX <= (.5 * ww)) {
-                    if (arg.event.pageY <= (.5 * wh)) { //Q2
-                        if ((arg.event.pageY - half_oh) > 0) {
-                            offset_coordinates = applyArrowCSS(1);
-                            container_coordinates = {
-                                x: arg.event.pageX + arrow_width,
-                                y: arg.event.pageY - half_oh
-                            };
-                        } else {
-                            if ((arg.event.pageX - half_ow) > 0) {
-                                offset_coordinates = applyArrowCSS(3);
-                                container_coordinates = {
-                                    x: arg.event.pageX + arrow_width - half_ow,
-                                    y: arg.event.pageY + arrow_width
-                                };
-                            } else {
-                                if (arg.event.pageY >= arg.event.pageX) {
-                                    offset_coordinates = applyArrowCSS(1);
-                                    container_coordinates = {
-                                        x: arg.event.pageX + arrow_width,
-                                        y: arg.event.pageY - arrow_width
-                                    };
-                                } else {
-                                    offset_coordinates = applyArrowCSS(3);
-                                    container_coordinates = {
-                                        x: arg.event.pageX - arrow_width,
-                                        y: arg.event.pageY + arrow_width
-                                    };
-                                }
-                            }
-                        }
-                    } else { //Q3
-                        if ((arg.event.pageY + half_oh + arrow_width) < wh) {
-                            offset_coordinates = applyArrowCSS(1);
-                            container_coordinates = {
-                                x: arg.event.pageX + arrow_width,
-                                y: arg.event.pageY - half_oh
-                            };
-                        } else {
-                            if ((arg.event.pageX - half_ow) > 0) {
-                                offset_coordinates = applyArrowCSS(4);
-                                container_coordinates = {
-                                    x: arg.event.pageX + arrow_width - half_ow,
-                                    y: arg.event.pageY - oh
-                                };
-                            } else {
-                                if ((wh - arg.event.pageY) >= arg.event.pageX) {
-                                    offset_coordinates = applyArrowCSS(1);
-                                    container_coordinates = {
-                                        x: arg.event.pageX + arrow_width,
-                                        y: arg.event.pageY + tip_translate - oh
-                                    };
-                                } else {
-                                    offset_coordinates = applyArrowCSS(4);
-                                    container_coordinates = {
-                                        x: arg.event.pageX - arrow_width,
-                                        y: arg.event.pageY - oh
-                                    };
-                                }
-                            }
-                        }
-                    }
+                    quadrant = (arg.event.pageY <= (.5 * wh)) ? 2 : 3;
+                    tipXAdjustment = 1;
                 } else {
-                    if (arg.event.pageY <= (.5 * wh)) { //Q1
-                        if ((arg.event.pageY - half_oh) > 0) {
-                            offset_coordinates = applyArrowCSS(2);
-                            container_coordinates = {
-                                x: arg.event.pageX - ow,
-                                y: arg.event.pageY - half_oh
-                            };
-                        } else {
-                            if ((arg.event.pageX + half_ow) < ww) {
-                                offset_coordinates = applyArrowCSS(3);
-                                container_coordinates = {
-                                    x: arg.event.pageX + arrow_width - half_ow,
-                                    y: arg.event.pageY + arrow_width
-                                };
-                            } else {
-                                if (arg.event.pageY >= (ww - arg.event.pageX)) {
-                                    offset_coordinates = applyArrowCSS(2);
-                                    container_coordinates = {
-                                        x: arg.event.pageX - ow,
-                                        y: arg.event.pageY - arrow_width
-                                    };
-                                } else {
-                                    offset_coordinates = applyArrowCSS(3);
-                                    container_coordinates = {
-                                        x: arg.event.pageX + tip_translate - ow,
-                                        y: arg.event.pageY + arrow_width
-                                    };
-                                }
-                            }
-                        }
-                    } else { //Q4
-                        if ((arg.event.pageY + half_oh + arrow_width) < wh) {
-                            offset_coordinates = applyArrowCSS(2);
-                            container_coordinates = {
-                                x: arg.event.pageX - ow,
-                                y: arg.event.pageY - half_oh
-                            };
-                        } else {
-                            if ((arg.event.pageX + half_ow) < ww) {
-                                offset_coordinates = applyArrowCSS(4);
-                                container_coordinates = {
-                                    x: arg.event.pageX + arrow_width - half_ow,
-                                    y: arg.event.pageY - oh
-                                };
-                            } else {
-                                if ((wh - arg.event.pageY) >= (ww - arg.event.pageX)) {
-                                    offset_coordinates = applyArrowCSS(2);
-                                    container_coordinates = {
-                                        x: arg.event.pageX - ow,
-                                        y: arg.event.pageY + tip_translate - oh
-                                    };
-                                } else {
-                                    offset_coordinates = applyArrowCSS(4);
-                                    container_coordinates = {
-                                        x: arg.event.pageX + tip_translate - ow,
-                                        y: arg.event.pageY - oh
-                                    };
-                                }
-                            }
-                        }
-                    }
+                    quadrant = (arg.event.pageY <= (.5 * wh)) ? 1 : 4;
+                    containerXAdjustment = 1;  
                 }
 
+                xMult = -1 * Math.sign(Math.cos(((2 * quadrant - 1) * Math.PI) / 4));
+                xAdjustment = (xMult * settings.arrowOffset) + (tipXAdjustment * obj_width) + (xMult * containerXAdjustment * arrow_width);
+                tip_coordinates.x += xAdjustments;
+                
+                container_coordinates = {
+                    x: tip_coordinates.x + (tipXAdjustment * xMult * arrow_width) + (containerXAdjustment * ow),
+                    y: tip_coordinates.y - half_oh
+                };
+                
+                applyArrowCSS(quadrant);
+                
+                if (quadrant > 2) {
+                    if ((container_coordinates.y + oh) > wh) {
+                        containerYAdjustment = wh - (container_coordinates.y + oh);
+                    }
+                } else {
+                    if (container_coordinates.y < 0) {
+                        containerYAdjustment = -1 * container_coordinates.y;
+                    }
+                }
+                
+                container_coordinates.y += containerYAdjustment;
+                                       
                 if (typeof(settings.destroyOnMouseleave) === 'boolean' && settings.destroyOnMouseleave) {
-                    $("#yt_container").mouseleave(function() {
+                    container.mouseleave(function() {
                         removeYoutip(1);
                     });
                 }
 
                 container.css({
-                    "left": (container_coordinates.x + offset_coordinates.x) + "px",
-                    "top": (container_coordinates.y + offset_coordinates.y) + "px",
+                    "left": container_coordinates.x + "px",
+                    "top": container_coordinates.y + "px",
                     "visibility": "visible"
                 });
                 arrow.css({
-                    "left": (arg.event.pageX + offset_coordinates.x) + "px",
-                    "top": (arg.event.pageY + offset_coordinates.y) + "px",
+                    "left": tip_coordinates.x + "px",
+                    "top": tip_coordinates.y + "px",
                     "visibility": "visible"
                 });
+                
                 if(typeof(settings.createCallback) === 'function' && settings.createCallback) {
                     settings.createCallback();
                 }
