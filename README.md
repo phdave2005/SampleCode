@@ -48,42 +48,42 @@ The default options can be overwritten by also passing "user_defined_settings":
     
 The supported values of each user defined setting is as follows:
 
-animationOnDestroy:
-    false: The youTip container will simply be removed from the DOM
-    'fadeOut': the container will fadeOut over 500ms, and then be removed
-    'slideUp': the container will slideUp over 500ms, and then be removed
+    animationOnDestroy:
+        false: The youTip container will simply be removed from the DOM
+        'fadeOut': the container will fadeOut over 500ms, and then be removed
+        'slideUp': the container will slideUp over 500ms, and then be removed
 
-arrowOffset:
-    <number>: The number of pixel to offset the container and arrow from the event which calls youTip() in callback
+    arrowOffset:
+        <number>: The number of pixel to offset the container and arrow from the event which calls youTip() in callback
   
-background:
-    <color> or <image>: The background for the container
+    background:
+        <color> or <image>: The background for the container
   
-createCallback:
-    <function>: A function to call right after the tooltip is rendered
+    createCallback:
+        <function>: A function to call right after the tooltip is rendered
   
-delay:
-    <number>: The milliseconds to delay before rendering the tooltip
+    delay:
+        <number>: The milliseconds to delay before rendering the tooltip
 
-destroyCallback:
-    <function>: A function to call right after the tooltip is removed from the DOM
+    destroyCallback:
+        <function>: A function to call right after the tooltip is removed from the DOM
 
-destroyOnMouseleave:
-    <boolean>: If tooltip is moused over, it will be destroyed on mouseleave (if set to true, otherwise not destroyed)
+    destroyOnMouseleave:
+        <boolean>: If tooltip is moused over, it will be destroyed on mouseleave (if set to true, otherwise not destroyed)
 
-hiddenSections:
-    Add these as an array to hide sections rendered in tooltip...possible values are:
-    'snippet': Will render the video's title, description, publishedAt
-    'statistics': Will render the stats for the video
-    'status': Will render license and privacyStatus
+    hiddenSections:
+        Add these as an array to hide sections rendered in tooltip...possible values are:
+        'snippet': Will render the video's title, description, publishedAt
+        'statistics': Will render the stats for the video
+        'status': Will render license and privacyStatus
     
-    // So to exclude all 3 ---> ['snippet', 'statistics', 'status'] whereas to include all 3 ---> []
+        // So to exclude all 3 ---> ['snippet', 'statistics', 'status'] whereas to include all 3 ---> []
 
-maxWidth:
-    <number>: relative to window width, where window width = 1, will be constrained to be between .15 and .45,
+    maxWidth:
+        <number>: relative to window width, where window width = 1, will be constrained to be between .15 and .45,
 
-showEmbed:
-    <boolean>: If set to true, the embedded video will be included in the tooltip, otherwise excluded
+    showEmbed:
+        <boolean>: If set to true, the embedded video will be included in the tooltip, otherwise excluded
   
   
 In addition, the youTip function will scan the DOM and look for inclusion of font awesome 4 or 5 (free version). If found, the statistics icons will be FA, otherwise, plain HTML entities.
