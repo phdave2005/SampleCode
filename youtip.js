@@ -28,7 +28,7 @@
             obj_offset = $t.offset(),
             obj_width = $t.outerWidth(),
             settings = arg.user_defined_settings ? $.extend(default_settings, arg.user_defined_settings) : default_settings,
-            videoId = $(arg.t).attr("data-video_id"),
+            videoId = $t.attr("data-video_id"),
             yt_key = /* YOUR YOUTUBE KEY GOES HERE */,
             w = $(window),
             ww = w.width(),
@@ -332,7 +332,7 @@
                 if (settings.animationOnDestroy) {
                     if (!animation_in_progress) {
                         animation_in_progress = true;
-                        $("#arrow").hide();
+                        $("#yt_arrow").hide();
                         if (isSupportedAnimation(settings.animationOnDestroy)) {
                             $("#yt_container")[settings.animationOnDestroy](500, function() {
                                 handleDestroyCallback();
