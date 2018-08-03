@@ -322,7 +322,7 @@
         var animation_in_progress;
         function removeYoutip(user_destroy) {
             var handleDestroyCallback = function() {
-                $("#arrow,#yt_container").remove();
+                $("#yt_arrow,#yt_container").remove();
                 animation_in_progress = false;
                 if (typeof(settings.destroyCallback) === 'function' && settings.destroyCallback) {
                     settings.destroyCallback();
